@@ -89,9 +89,30 @@
             En la ciudad de [........], se acuerda entre la Empresa [..........] representada por el Sr. [..............] en su carácter de Apoderado, con domicilio en la calle [..............] y el Sr. [..............], futuro empleado con domicilio en [..............], celebrar el presente contrato a Plazo Fijo, de acuerdo a la normativa vigente de los artículos 90,92,93,94, 95 y concordantes de la Ley de Contrato de Trabajo N° 20.744.
         </textarea><br>
         <input type="submit" name="ejercicio" value="Enviar">
-
-
-
+        <br> <br> <hr>
+    </form>
+    <!--Ejercicio 6: Gestionar Pedido-->
+    <h3>Ejercicio 6: Gestionar Pedido</h3>
+    <form action="" method="post">
+        <p>Nombre: </p>
+        <input type="text" name="nombre" size="30">
+        <br>
+        <p>Direccion: </p>
+        <input type="text" name="direccion" size="40">
+        <br>
+        <p>Jamon y Queso: </p>
+        <input type="checkbox" name="jamonqueso">
+        <input type="text" name="cantjamonqueso" size="3">
+        <br>
+        <p>Napolitana:</p>
+        <input type="checkbox" name="napolitana">
+        <input type="text" name="cantnapolitana" size="3">
+        <br>
+        <p>Muzzarella</p>
+        <input type="checkbox" name="muzzarella">
+        <input type="text" name="cantmuzzarella" size="3">
+        <br>
+        <input type="submit" name="ejercicio" value="Enviar Pedido">
     </form>
     <?php
         // Definir la función que genera un número aleatorio y muestra el resultado
@@ -259,6 +280,66 @@
         function gestionarContratos(){
             echo $_POST['contrato'];
         }
+
+        function imprimirDiasSemana(){
+            //Definir el vector (array) con os dias de la semana
+            $diasSemana = array("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo");
+            //Imprimir el primer elemento del vector
+            echo "Primer dia de la semana es: ".$diasSemana[0]."<br>";
+            //Imprimir el ulitmo elemento del vector
+            echo "El último día de la semana es: " . $diasSemana[count($diasSemana) - 1] . "<br>";
+            echo "<br> <hr>";
+        }
+
+        function gestionarPedido(){
+            $ar = fopen("datos.txt","a") or die("Problemas en la creacion");
+            fputs($ar, "Nombre: ");
+            fputs($ar, $_POST['nombre']);
+            fputs($ar, "\n");
+            fputs($ar, "Dirección:");
+            fputs($ar, $_POST['direccion']);
+            fputs($ar, "\n");
+            if (isset($_POST['jamonqueso'])) {
+              fputs($ar, "Cantidad de Jamón y Queso:");
+              fputs($ar, $_POST['cantjamonqueso']);
+              fputs($ar, "\n");
+            }
+            if (isset($_POST['napolitana'])) {
+              fputs($ar, "Cantidad de Napolitana:");
+              fputs($ar, $_POST['cantnapolitana']);
+              fputs($ar, "\n");
+            }
+            if (isset($_POST['muzzarella'])) {
+              fputs($ar, "Cantidad de Muzzarella:");
+              fputs($ar, $_POST['cantmuzzarella']);
+              fputs($ar, "\n");
+            }
+          
+            fputs($ar, "--------------------------------------------------------");
+            fputs($ar, "\n");
+            fclose($ar);
+            echo "El pedido se cargó correctamente.";
+        }
+        function leerPedido(){
+            $ar = fopen("datos.txt", "r") or die ("No se pudo abrir el archivo");
+            while(!feof($ar)){
+                $linea = fgets($ar);
+                $lineaSalto = nl2br($linea);
+                echo $lineaSalto;
+            }
+            fclose($ar);
+        }
+        function vectoresAsociativos(){
+            $clave['ana'] = "abc123";
+            $clave['luis'] = "z67yui";
+            $clave['carlos'] = "sdf3sdf";
+            $clave['laura'] = "dsf3k32";
+            $clave['pedro'] = "axldds23";
+          
+            echo "La clave de luis es:" . $clave['luis'];
+          
+        }
+
         // Procesar formularios según el botón que fue presionado
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($_POST['ejercicio'] == 'Enviar Edad') {
@@ -271,6 +352,8 @@
                 controlGastos();
             }elseif ($_POST['ejercicio'] == 'Enviar') {
                 gestionarContratos();
+            }elseif($_POST['ejercicio']== 'Enviar Pedido'){
+                gestionarPedido();
             }
         }
         echo "<br><hr>";
@@ -282,6 +365,9 @@
         tablaMultiplicarFor();
         tablaMultiplicarWhile();
         tablaMultiplarDoWhile();
+        imprimirDiasSemana();
+        leerPedido();
+        vectoresAsociativos();
 
     ?>
 
